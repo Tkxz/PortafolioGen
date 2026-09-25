@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortafolioGen | Tu sitio web profesional en segundos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        slate: { 950: '#020617', 900: '#0f172a', 800: '#1e293b', 50: '#f8fafc' }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass { 
+            background: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(0, 0, 0, 0.05); 
+        }
+        .dark .glass { 
+            background: rgba(15, 23, 42, 0.6); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+        }
+
+        .glass-card { 
+            background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 1) 100%); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(0, 0, 0, 0.05); 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05); 
+        }
+        .dark .glass-card { 
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.3) 0%, rgba(15, 23, 42, 0.3) 100%); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); 
+        }
+        
+        .text-gradient { 
+            background: linear-gradient(to right, #0ea5e9, #06b6d4, #14b8a6); 
+            background-clip: text; 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        .dark .text-gradient { 
+            background: linear-gradient(to right, #22d3ee, #06b6d4, #14b8a6); 
+            background-clip: text; 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        .ide-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+        .ide-scroll::-webkit-scrollbar-track { background: transparent; border-radius: 8px; }
+        .ide-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+        .dark .ide-scroll::-webkit-scrollbar-thumb { background: #334155; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-700 dark:bg-slate-950 dark:text-slate-300 font-sans antialiased overflow-x-hidden selection:bg-cyan-500/30 transition-colors duration-300">
+
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-cyan-300/30 dark:bg-cyan-600/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob transition-colors duration-500"></div>
+        <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-teal-300/30 dark:bg-teal-600/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob animation-delay-2000 transition-colors duration-500"></div>
+    </div>
+
+    <header class="fixed top-0 w-full z-50 glass border-b border-slate-200 dark:border-slate-800/50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <a href="#" class="flex items-center gap-2 group">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <span class="font-display font-bold text-xl tracking-tight text-slate-900 dark:text-white">Portafolio<span class="text-cyan-500 dark:text-cyan-400">Gen</span></span>
+                </a>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button id="themeToggle" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg id="moonIcon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+
+                <div id="profileArea" class="flex items-center gap-3">
+                    <button id="openSettingsBtn" class="text-xs bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-lg transition-colors border border-slate-300 dark:border-slate-700">
+                        👤 Iniciar sesión
+                    </button>
+                </div>
+                <a href="#app-core" class="hidden sm:inline-flex bg-cyan-600 text-white hover:bg-cyan-500 font-semibold text-sm px-4 py-2 rounded-full transition-colors shadow-lg shadow-cyan-600/20">
+                    Ir al Generador
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-16">
+        
+        <section class="pt-24 pb-12 px-6 max-w-7xl mx-auto text-center relative overflow-hidden" data-aos="fade-up" data-aos-duration="800">
+
+            
+            <h1 class="font-display text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight mb-6 max-w-4xl mx-auto transition-colors">
+                Tu portafolio profesional en <span class="text-gradient">cuestión de segundos</span>.
+            </h1>
+            
+            <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed transition-colors">
+                Genera una página web moderna, limpia y responsive lista para publicar. Usa nuestra IA para autocompletar tus datos o edita el formato JSON directamente.
+            </p>
+        </section>
+
+        <section class="max-w-6xl mx-auto px-6 mb-16" data-aos="fade-up" data-aos-delay="100">
+            <div class="glass-card p-6 md:p-8 rounded-2xl relative overflow-hidden group hover:border-cyan-500/30 transition-all duration-500">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-100 dark:bg-cyan-950/50 border border-cyan-200 dark:border-cyan-800 flex items-center justify-center text-cyan-600 dark:text-cyan-400 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h2 class="font-display text-2xl font-bold text-slate-900 dark:text-white transition-colors">Guía rápida de inicio</h2>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8 relative z-10">
+                    <div class="glass-card p-5 rounded-xl border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 space-y-3 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+                        <div class="flex items-center gap-2.5">
+                            <span class="flex items-center justify-center w-7 h-7 rounded-full bg-cyan-500 text-white text-xs font-bold shadow-lg">1</span>
+                            <h3 class="text-slate-800 dark:text-white font-semibold text-lg transition-colors">Prepara tus datos</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed transition-colors">Pega tu CV (Curriculum Vitae) en texto plano en el panel de Inteligencia Artificial o edita el JSON directamente.</p>
+                    </div>
+                    <div class="glass-card p-5 rounded-xl border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 space-y-3 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+                        <div class="flex items-center gap-2.5">
+                            <span class="flex items-center justify-center w-7 h-7 rounded-full bg-cyan-500 text-white text-xs font-bold shadow-lg">2</span>
+                            <h3 class="text-slate-800 dark:text-white font-semibold text-lg transition-colors">Elige el diseño</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed transition-colors">Selecciona una de las plantillas disponibles. El contenido se adaptará al instante.</p>
+                    </div>
+                    <div class="glass-card p-5 rounded-xl border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 space-y-3 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+                        <div class="flex items-center gap-2.5">
+                            <span class="flex items-center justify-center w-7 h-7 rounded-full bg-cyan-500 text-white text-xs font-bold shadow-lg">3</span>
+                            <h3 class="text-slate-800 dark:text-white font-semibold text-lg transition-colors">Descarga tu web</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed transition-colors">Obtén un archivo único listo para subir a GitHub Pages o Vercel gratuitamente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="app-core" class="py-12 px-6 relative border-t border-slate-200 dark:border-slate-800/50 bg-slate-100/50 dark:bg-slate-900/20 transition-colors duration-300">
+            <div class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8 items-start">
+                
+                <div class="lg:col-span-8 space-y-8" data-aos="fade-right">
+                    <form id="generatorForm" class="space-y-8">
+                        
+                        <div class="glass-card rounded-2xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 transition-colors">
+                            <div class="flex items-center gap-3 mb-6 border-b border-slate-200 dark:border-slate-800/70 pb-4 transition-colors">
+                                <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <h3 class="text-xl font-semibold text-slate-900 dark:text-white transition-colors">1. Elige una plantilla</h3>
+                            </div>
+                            <div id="themeGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                        </div>
+
+                        <div class="glass-card rounded-2xl overflow-hidden border border-slate-200 dark:border-cyan-500/20 shadow-lg transition-colors hover:shadow-cyan-500/10 duration-300">
+                            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800/50 flex items-center justify-between bg-white/60 dark:bg-slate-900/60 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                                    <h3 class="text-xl font-semibold text-slate-900 dark:text-white transition-colors">2. Tus datos (JSON)</h3>
+                                </div>
+                                <div class="flex gap-2">
+                                    <span class="text-xs font-mono bg-slate-200 dark:bg-cyan-950/50 text-slate-700 dark:text-cyan-300 px-2 py-1 rounded border border-slate-300 dark:border-cyan-800">data.json</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-[#1e1e1e] w-full flex border-t border-slate-800">
+                                <div class="w-10 bg-[#1e1e1e] border-r border-slate-800 text-right pr-2 py-4 text-[#5c6370] font-mono text-sm select-none opacity-50 hidden sm:block">
+                                    1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10
+                                </div>
+                                <textarea
+                                    id="jsonData"
+                                    rows="15"
+                                    class="w-full bg-[#1e1e1e] text-[#abb2bf] font-mono text-sm p-4 focus:outline-none resize-y ide-scroll selection:bg-[#3e4451]"
+                                    spellcheck="false"
+                                >{
+  "nombre": "Álex Dev",
+  "subtitulo": "Desarrollador Fullstack",
+  "biografia": "Apasionado por crear herramientas automatizadas y escribir código limpio.",
+  "habilidades": ["React", "Node.js", "Express", "Tailwind CSS"],
+  "proyectos": [
+    {
+      "titulo": "SaaS Platform",
+      "descripcion": "Plataforma web que procesa datos con alto rendimiento.",
+      "enlace": "https://github.com/usuario/repo"
+    }
+  ]
+}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-4 border border-slate-200 dark:border-slate-800 transition-colors">
+                            <button
+                                type="submit"
+                                class="w-full sm:w-auto flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-base px-6 py-4 rounded-xl shadow-lg shadow-cyan-600/25 flex items-center justify-center space-x-2 transform hover:-translate-y-1 transition-all active:scale-[0.98]"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                <span>3. Descargar HTML Final</span>
+                            </button>
+                            <button
+                                type="button"
+                                id="saveBtn"
+                                class="w-full sm:w-auto bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-medium px-6 py-4 rounded-xl border border-slate-300 dark:border-slate-700 flex items-center justify-center gap-2 transform hover:-translate-y-1 transition-all"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                                Guardar progreso
+                            </button>
+                        </div>
+                        
+                        <div id="successBox" class="hidden border border-teal-200 dark:border-teal-500/30 bg-teal-50 dark:bg-teal-950/40 p-5 rounded-2xl text-teal-800 dark:text-teal-200 shadow-inner">
+                            <p class="font-bold flex items-center gap-2 text-teal-600 dark:text-teal-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                ¡Sitio generado con éxito!
+                            </p>
+                            <p class="text-sm mt-1">Revisa tu carpeta de descargas. Tienes un archivo `index.html` estático listo para publicar.</p>
+                        </div>
+                    </form>
+                </div>
+
+                <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-24" data-aos="fade-left">
+                    
+                    <div class="glass-card border border-cyan-200 dark:border-cyan-500/15 p-1 rounded-2xl relative overflow-hidden group shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        <div class="bg-white dark:bg-slate-900 rounded-xl p-6 relative z-10 space-y-4 transition-colors">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-cyan-100 dark:bg-cyan-950/50 border border-cyan-200 dark:border-cyan-800 flex items-center justify-center text-cyan-600 dark:text-cyan-400 shrink-0">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-base font-bold text-slate-900 dark:text-white transition-colors">Asistente Inteligente</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-1">Pega tu CV o descripción informal y la IA armará el JSON.</p>
+                                </div>
+                            </div>
+                            
+                            <textarea
+                                id="aiRawText"
+                                rows="6"
+                                placeholder="Ej: Hola, soy Laura. Soy diseñadora UX con 4 años de experiencia..."
+                                class="w-full bg-slate-50 dark:bg-slate-950/80 border border-slate-300 dark:border-slate-700/80 rounded-xl p-3 text-sm text-slate-800 dark:text-slate-300 focus:outline-none focus:border-cyan-500 transition-colors resize-none placeholder-slate-400 dark:placeholder-slate-700 ide-scroll"
+                            ></textarea>
+                            
+                            <button
+                                type="button"
+                                id="aiGenerateBtn"
+                                class="w-full bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold py-3 px-4 rounded-xl transition-all text-sm flex justify-center items-center gap-2 shadow-lg hover:-translate-y-0.5 transform active:scale-[0.98]"
+                            >
+                                 Organizar con IA
+                            </button>
+                            <p id="aiStatus" class="text-xs font-medium text-center min-h-[1.2rem] text-slate-500 transition-colors"></p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4 transition-colors">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                                <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Historial Guardado
+                            </h3>
+                            <span class="text-[10px] text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded font-mono border border-slate-300 dark:border-slate-700">MySQL</span>
+                        </div>
+                        <div id="myPortfoliosList" class="space-y-3 max-h-[250px] overflow-y-auto pr-2 ide-scroll"></div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 pt-12 pb-8 px-6 relative z-10 transition-colors">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+            <div class="space-y-2">
+                <span class="font-display font-bold text-lg text-slate-900 dark:text-white">Portafolio<span class="text-cyan-500">Gen</span></span>
+                <p class="text-sm text-slate-500 max-w-sm leading-relaxed">Tu identidad digital profesional, generada en tiempo real mediante Inteligencia Artificial.</p>
+            </div>
+            <div class="text-sm text-slate-500 flex flex-col items-center md:items-end gap-2.5">
+                <p>&copy; 2026 PortafolioGen v2.5.</p>
+                <div class="flex items-center gap-2 border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50 dark:bg-emerald-950/20 px-3 py-1.5 rounded-lg text-emerald-700 dark:text-emerald-400">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    datos asegurados en MySQL
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="authModal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="glass border border-slate-300 dark:border-slate-700 rounded-2xl w-full max-w-md p-8 relative shadow-2xl">
+            <button id="closeAuthModal" class="absolute top-5 right-5 text-slate-400 hover:text-white bg-slate-800/70 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
+            <h3 class="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Cuenta PortafolioGen</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Tus credenciales y portafolios se almacenan en MySQL. La contraseña se guarda únicamente como hash seguro.</p>
+
+            <div class="grid grid-cols-2 gap-2 bg-slate-200 dark:bg-slate-900 rounded-xl p-1 mb-6">
+                <button type="button" id="loginTab" class="auth-tab rounded-lg py-2 text-sm font-semibold bg-cyan-600 text-white">Iniciar sesión</button>
+                <button type="button" id="registerTab" class="auth-tab rounded-lg py-2 text-sm font-semibold text-slate-600 dark:text-slate-300">Crear cuenta</button>
+            </div>
+
+            <p id="authStatus" class="text-sm min-h-[1.25rem] mb-4"></p>
+
+            <form id="loginForm" class="space-y-4">
+                <input id="loginEmail" type="email" autocomplete="email" required placeholder="Correo electrónico" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500">
+                <input id="loginPassword" type="password" autocomplete="current-password" required minlength="8" placeholder="Contraseña" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500">
+                <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-xl">Iniciar sesión</button>
+            </form>
+
+            <form id="registerForm" class="hidden space-y-4">
+                <input id="registerName" type="text" autocomplete="name" required minlength="2" maxlength="120" placeholder="Nombre" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500">
+                <input id="registerEmail" type="email" autocomplete="email" required placeholder="Correo electrónico" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500">
+                <input id="registerPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="72" placeholder="Contraseña (mín. 8 caracteres)" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-500">
+                <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-xl">Crear cuenta</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Inicializar animaciones de scroll
+        AOS.init({
+            once: true,
+            offset: 40,
+            duration: 800
+        });
+
+        // Controlador del Modo Claro / Oscuro
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        if (localStorage.getItem('theme') === 'light' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+            htmlElement.classList.remove('dark');
+        } else {
+            htmlElement.classList.add('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            if (htmlElement.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+    
+    <script src="js/templates.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
