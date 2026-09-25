@@ -17,7 +17,8 @@ portafoliogen-fastapi/
 ├── rutas/
 │   ├── auth.py
 │   ├── portafolios.py
-│   └── ai.py
+│   └── ai.pya
+│   └── plantillas.py
 ├── js/
 │   ├── app.js
 │   └── templates.js
