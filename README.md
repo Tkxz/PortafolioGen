@@ -40,7 +40,7 @@ DB_USER=root
 DB_PASSWORD=TU_PASSWORD_MYSQL
 DB_NAME=portafoliogen
 NVIDIA_API_KEY=REEMPLAZAR_CON_CLAVE_PERSONAL
-NVIDIA_MODEL=meta/llama-3.1-8b-instruct
+NVIDIA_MODEL=google/diffusiongemma-26b-a4b-it
 ```
 
 ## 3. Instalar dependencias
