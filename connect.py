@@ -1,9 +1,8 @@
 import os
 from contextlib import contextmanager
-
+from dotenv import load_dotenv
 import pymysql
 import pymysql.cursors
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -23,16 +22,14 @@ def get_connection():
         database=DB_NAME,
         charset="utf8mb4",
         cursorclass=pymysql.cursors.DictCursor,
-        autocommit=False
+        autocommit=False,
     )
 
 
 @contextmanager
 def db_connection():
     connection = get_connection()
-
     try:
         yield connection
-
     finally:
         connection.close()

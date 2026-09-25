@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Crea, guarda y descarga portafolios profesionales con FastAPI, MySQL e inteligencia artificial.">
+    <meta name="theme-color" content="#020617">
+    <meta name="color-scheme" content="dark light">
     <title>PortafolioGen | Tu sitio web profesional en segundos</title>
+    <script>
+        (() => {
+            const saved = localStorage.getItem('theme');
+            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+            document.documentElement.classList.toggle('dark', saved ? saved === 'dark' : !prefersLight);
+        })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -81,6 +91,40 @@
         .ide-scroll::-webkit-scrollbar-track { background: transparent; border-radius: 8px; }
         .ide-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
         .dark .ide-scroll::-webkit-scrollbar-thumb { background: #334155; }
+
+        :focus-visible {
+            outline: 3px solid rgba(6, 182, 212, 0.65);
+            outline-offset: 3px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            display: inline-block;
+        }
+
+        .page-enter {
+            animation: pageEnter 650ms cubic-bezier(.2,.8,.2,1) both;
+        }
+
+        .page-enter-delay {
+            animation: pageEnter 650ms 100ms cubic-bezier(.2,.8,.2,1) both;
+        }
+
+        @keyframes pageEnter {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-700 dark:bg-slate-950 dark:text-slate-300 font-sans antialiased overflow-x-hidden selection:bg-cyan-500/30 transition-colors duration-300">
@@ -102,7 +146,7 @@
             </div>
             
             <div class="flex items-center gap-4">
-                <button id="themeToggle" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+                <button id="themeToggle" type="button" aria-label="Cambiar tema claro u oscuro" title="Cambiar tema" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
                     <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                     <svg id="moonIcon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                 </button>
@@ -121,7 +165,7 @@
 
     <main class="relative z-10 pt-16">
         
-        <section class="pt-24 pb-12 px-6 max-w-7xl mx-auto text-center relative overflow-hidden" data-aos="fade-up" data-aos-duration="800">
+        <section class="page-enter pt-24 pb-12 px-6 max-w-7xl mx-auto text-center relative overflow-hidden">
 
             
             <h1 class="font-display text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight mb-6 max-w-4xl mx-auto transition-colors">
@@ -133,7 +177,7 @@
             </p>
         </section>
 
-        <section class="max-w-6xl mx-auto px-6 mb-16" data-aos="fade-up" data-aos-delay="100">
+        <section class="page-enter-delay max-w-6xl mx-auto px-6 mb-16">
             <div class="glass-card p-6 md:p-8 rounded-2xl relative overflow-hidden group hover:border-cyan-500/30 transition-all duration-500">
                 <div class="flex items-center gap-3 mb-8">
                     <div class="w-10 h-10 rounded-xl bg-cyan-100 dark:bg-cyan-950/50 border border-cyan-200 dark:border-cyan-800 flex items-center justify-center text-cyan-600 dark:text-cyan-400 transition-colors">
@@ -171,7 +215,7 @@
         <section id="app-core" class="py-12 px-6 relative border-t border-slate-200 dark:border-slate-800/50 bg-slate-100/50 dark:bg-slate-900/20 transition-colors duration-300">
             <div class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8 items-start">
                 
-                <div class="lg:col-span-8 space-y-8" data-aos="fade-right">
+                <div class="lg:col-span-8 space-y-8">
                     <form id="generatorForm" class="space-y-8">
                         
                         <div class="glass-card rounded-2xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 transition-colors">
@@ -188,7 +232,10 @@
                                     <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                                     <h3 class="text-xl font-semibold text-slate-900 dark:text-white transition-colors">2. Tus datos (JSON)</h3>
                                 </div>
-                                <div class="flex gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span id="jsonValidation" class="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5" aria-live="polite">
+                                        <span class="status-dot bg-emerald-500"></span> JSON válido
+                                    </span>
                                     <span class="text-xs font-mono bg-slate-200 dark:bg-cyan-950/50 text-slate-700 dark:text-cyan-300 px-2 py-1 rounded border border-slate-300 dark:border-cyan-800">data.json</span>
                                 </div>
                             </div>
@@ -246,7 +293,7 @@
                     </form>
                 </div>
 
-                <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-24" data-aos="fade-left">
+                <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
                     
                     <div class="glass-card border border-cyan-200 dark:border-cyan-500/15 p-1 rounded-2xl relative overflow-hidden group shadow-lg hover:-translate-y-1 transition-all duration-300">
                         <div class="bg-white dark:bg-slate-900 rounded-xl p-6 relative z-10 space-y-4 transition-colors">
@@ -260,12 +307,28 @@
                                 </div>
                             </div>
                             
-                            <textarea
-                                id="aiRawText"
-                                rows="6"
-                                placeholder="Ej: Hola, soy Laura. Soy diseñadora UX con 4 años de experiencia..."
-                                class="w-full bg-slate-50 dark:bg-slate-950/80 border border-slate-300 dark:border-slate-700/80 rounded-xl p-3 text-sm text-slate-800 dark:text-slate-300 focus:outline-none focus:border-cyan-500 transition-colors resize-none placeholder-slate-400 dark:placeholder-slate-700 ide-scroll"
-                            ></textarea>
+                            <div class="grid grid-cols-2 gap-2 bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <button type="button" id="aiModeJson" class="ai-mode-btn rounded-lg py-2 px-2 text-xs font-bold bg-fuchsia-600 text-white transition-all">JSON de habilidades</button>
+                                <button type="button" id="aiModeTemplate" class="ai-mode-btn rounded-lg py-2 px-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all">Plantillas</button>
+                            </div>
+
+                            <div id="aiModeHelp" class="rounded-xl border border-fuchsia-200 dark:border-fuchsia-900/40 bg-fuchsia-50 dark:bg-fuchsia-950/20 p-3 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Pega tu CV o descripción profesional. La IA lo convertirá al JSON que usa tu portafolio.
+                            </div>
+
+                            <div>
+                                <textarea
+                                    id="aiRawText"
+                                    rows="7"
+                                    maxlength="30000"
+                                    placeholder="Ej: Hola, soy Laura. Soy diseñadora UX con 4 años de experiencia..."
+                                    class="w-full bg-slate-50 dark:bg-slate-950/80 border border-slate-300 dark:border-slate-700/80 rounded-xl p-3 text-sm text-slate-800 dark:text-slate-300 focus:outline-none focus:border-cyan-500 transition-colors resize-none placeholder-slate-400 dark:placeholder-slate-700 ide-scroll"
+                                ></textarea>
+                                <div class="mt-1.5 flex justify-between gap-3 text-[11px] text-slate-500">
+                                    <span>Describe solo lo necesario para obtener mejores resultados.</span>
+                                    <span id="aiCharCount" class="font-mono shrink-0">0 / 30000</span>
+                                </div>
+                            </div>
                             
                             <button
                                 type="button"
@@ -288,6 +351,17 @@
                         </div>
                         <div id="myPortfoliosList" class="space-y-3 max-h-[250px] overflow-y-auto pr-2 ide-scroll"></div>
                     </div>
+
+                    <div class="glass-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4 transition-colors">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                                <svg class="w-4 h-4 text-fuchsia-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                Mis plantillas IA
+                            </h3>
+                            <span class="text-[10px] text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded font-mono border border-slate-300 dark:border-slate-700">Perfil</span>
+                        </div>
+                        <div id="myTemplatesList" class="space-y-3 max-h-[250px] overflow-y-auto pr-2 ide-scroll"></div>
+                    </div>
                 </aside>
             </div>
         </section>
@@ -309,10 +383,27 @@
         </div>
     </footer>
 
-    <div id="authModal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div id="pageGenerationOverlay" role="status" aria-live="polite" aria-busy="true" class="hidden fixed inset-0 z-[70] bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-6">
+        <div class="text-center max-w-md w-full">
+            <div class="relative w-28 h-28 mx-auto mb-7">
+                <div class="absolute inset-0 rounded-full border-4 border-cyan-500/15"></div>
+                <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-fuchsia-500 border-r-cyan-400 animate-spin"></div>
+                <div class="absolute inset-5 rounded-full bg-gradient-to-br from-fuchsia-600/30 to-cyan-500/30 flex items-center justify-center shadow-2xl shadow-fuchsia-500/20">
+                    <span class="text-3xl animate-pulse">✨</span>
+                </div>
+            </div>
+            <h3 class="font-display text-2xl font-bold text-white mb-2">Diseñando tu página</h3>
+            <p id="pageGenerationText" class="text-sm text-slate-400 mb-5">Analizando colores, estructura y animaciones...</p>
+            <div class="h-2 bg-slate-800 rounded-full overflow-hidden">
+                <div id="pageGenerationBar" class="h-full w-0 bg-gradient-to-r from-fuchsia-500 via-cyan-400 to-teal-400 rounded-full transition-all duration-500"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="glass border border-slate-300 dark:border-slate-700 rounded-2xl w-full max-w-md p-8 relative shadow-2xl">
-            <button id="closeAuthModal" class="absolute top-5 right-5 text-slate-400 hover:text-white bg-slate-800/70 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
-            <h3 class="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Cuenta PortafolioGen</h3>
+            <button id="closeAuthModal" type="button" aria-label="Cerrar ventana de autenticación" class="absolute top-5 right-5 text-slate-400 hover:text-white bg-slate-800/70 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
+            <h3 id="authModalTitle" class="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Cuenta PortafolioGen</h3>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Tus credenciales y portafolios se almacenan en MySQL. La contraseña se guarda únicamente como hash seguro.</p>
 
             <div class="grid grid-cols-2 gap-2 bg-slate-200 dark:bg-slate-900 rounded-xl p-1 mb-6">
@@ -337,32 +428,16 @@
         </div>
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-[90] space-y-2 w-[min(92vw,360px)]" aria-live="polite" aria-atomic="true"></div>
+
     <script>
-        // Inicializar animaciones de scroll
-        AOS.init({
-            once: true,
-            offset: 40,
-            duration: 800
-        });
-
-        // Controlador del Modo Claro / Oscuro
-        const themeToggleBtn = document.getElementById('themeToggle');
-        const htmlElement = document.documentElement;
-
-        if (localStorage.getItem('theme') === 'light' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-            htmlElement.classList.remove('dark');
-        } else {
-            htmlElement.classList.add('dark');
-        }
-
-        themeToggleBtn.addEventListener('click', () => {
-            htmlElement.classList.toggle('dark');
-            if (htmlElement.classList.contains('dark')) {
-                localStorage.setItem('theme', 'dark');
-            } else {
-                localStorage.setItem('theme', 'light');
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggleBtn = document.getElementById('themeToggle');
+            const htmlElement = document.documentElement;
+            themeToggleBtn?.addEventListener('click', () => {
+                htmlElement.classList.toggle('dark');
+                localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
+            });
         });
     </script>
     

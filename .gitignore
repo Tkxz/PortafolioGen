@@ -1,7 +1,6 @@
-# Entorno
 .env
 venv/
-
-# Python
+.venv/
 __pycache__/
-*.pyc
+*.py[cod]
+.DS_Store
