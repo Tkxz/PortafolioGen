@@ -1,8 +1,6 @@
 # PortafolioGen - FastAPI + MySQL + NVIDIA API
 
-Versión del proyecto reestructurada con FastAPI, MySQL y generación de contenido mediante la API de NVIDIA.
-
-La autenticación ya no usa JWT. El inicio de sesión funciona con una cookie `HttpOnly` y un identificador de sesión aleatorio cuyo hash se guarda en MySQL.
+proyecto con FastAPI, MySQL y generación de contenido mediante la API de NVIDIA.
 
 ## Estructura
 
