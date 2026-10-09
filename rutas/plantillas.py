@@ -21,21 +21,23 @@ class TemplateCreate(BaseModel):
 
 
 def _row_to_template(row: dict) -> dict:
-    colors = row.get("colors")
+    colors = row.get("swatches")
 
     if isinstance(colors, str):
         try:
             colors = json.loads(colors)
         except json.JSONDecodeError:
             colors = []
+    if not isinstance(colors, list):
+        colors = []
 
     return {
-        "id": row["id_plantilla"],
-        "name": row["Nombre"],
-        "description": row.get("Descripcion") or "",
-        "prompt": row.get("Prompt") or "",
-        "swatches": colors or [],
-        "template": row["HTML_Template"],
+        "id": row["id"],
+        "name": row["name"],
+        "description": row.get("description") or "",
+        "prompt": row.get("prompt") or "",
+        "swatches": colors,
+        "template": row["template"],
         "createdAt": (
             row["created_at"].isoformat()
             if row.get("created_at")
@@ -59,12 +61,12 @@ def list_templates(
                 cursor.execute(
                     """
                     SELECT
-                        id_plantilla,
-                        Nombre,
-                        Descripcion,
-                        Prompt,
-                        Colores AS colors,
-                        HTML_Template,
+                        id_plantilla AS id,
+                        nombre AS name,
+                        descripcion AS description,
+                        prompt,
+                        colores AS swatches,
+                        html_template AS template,
                         created_at,
                         updated_at
 
@@ -174,11 +176,11 @@ def create_template(
                     INSERT INTO Plantillas
                     (
                         usuario_id,
-                        Nombre,
-                        Descripcion,
-                        Prompt,
-                        Colores,
-                        HTML_Template
+                        nombre,
+                        descripcion,
+                        prompt,
+                        colores,
+                        html_template
                     )
 
                     VALUES

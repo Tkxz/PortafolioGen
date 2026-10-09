@@ -15,17 +15,29 @@ portafoliogen-fastapi/
 ├── rutas/
 │   ├── auth.py
 │   ├── portafolios.py
-│   └── ai.pya
+│   ├── ai.py
 │   └── plantillas.py
 ├── js/
 │   ├── app.js
 │   └── templates.js
+├── database/
+│   └── schema.sql
 └── index.html
 ```
 
 ## 1. Crear la base de datos
 
-Ejecuta `database/schema.sql` en MySQL. Además de usuarios y portafolios, se crea la tabla `Sesiones` para mantener sesiones de forma segura sin JWT.
+Crea la base de datos indicada en `DB_NAME` (por defecto `portafoliogen`) y ejecuta el esquema:
+
+```sql
+CREATE DATABASE portafoliogen CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+```bash
+mysql -u root -p portafoliogen < database/schema.sql
+```
+
+El esquema crea las tablas `Formulario`, `Usuarios`, `Portafolios` y `Plantillas`. La columna `html_template` es `MEDIUMTEXT` para guardar el HTML completo generado por la IA. Si ya tienes la tabla `Plantillas`, el script actualiza esa columna sin eliminar los datos existentes. Si `DB_NAME` tiene otro valor, selecciona esa base de datos al ejecutar el script.
 
 ## 2. Variables de entorno
 
@@ -61,10 +73,8 @@ La documentación de la API queda en `http://127.0.0.1:8000/docs`.
 ## Autenticación
 
 - Las contraseñas se guardan con bcrypt.
-- Al iniciar sesión se genera un identificador aleatorio con `secrets.token_urlsafe`.
-- En MySQL solo se guarda el SHA-256 de ese identificador.
-- El navegador recibe el identificador mediante una cookie `HttpOnly`.
+- La sesión se almacena en una cookie firmada `HttpOnly`.
 - JavaScript no puede leer esa cookie, por lo que ya no se guarda ningún token en `localStorage`.
 - Las sesiones duran 8 horas y se eliminan al cerrar sesión.
 
-Para producción mediante HTTPS, cambia `secure=False` por `secure=True` en `rutas/auth.py` para que la cookie solo viaje por HTTPS.
+Para producción mediante HTTPS, configura `https_only=True` en `main.py` para que la cookie solo viaje por HTTPS.

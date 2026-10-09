@@ -6,6 +6,7 @@ const state = {
   user: null,
   portfolios: [],
   userTemplates: [],
+  templateLoadError: null,
 };
 
 function escapeHtml(str) {
@@ -355,14 +356,16 @@ async function loadPortfoliosFromDb() {
 async function loadTemplatesFromDb() {
   if (!state.user) {
     state.userTemplates = [];
+    state.templateLoadError = null;
     renderMyTemplatesBox();
     return;
   }
   try {
     const result = await api('/api/templates');
     state.userTemplates = result.templates || [];
+    state.templateLoadError = null;
   } catch (err) {
-    state.userTemplates = [];
+    state.templateLoadError = err.message;
     console.error(err);
   }
   renderMyTemplatesBox();
@@ -406,7 +409,24 @@ function renderMyTemplatesBox() {
   if (!list) return;
 
   if (!state.user) {
-    list.innerHTML = '<p class="text-sm text-slate-500">Tus plantillas personalizadas aparecerán aquí cuando inicies sesión.</p>';
+    list.innerHTML = `
+      <div class="text-sm text-slate-500 space-y-2">
+        <p>Inicia sesión para generar plantillas con IA y ver las que guardaste.</p>
+        <button id="templatesLoginBtn" type="button" class="text-fuchsia-400 hover:underline">Iniciar sesión</button>
+      </div>
+    `;
+    $('templatesLoginBtn').addEventListener('click', () => openAuthModal('login'));
+    return;
+  }
+
+  if (state.templateLoadError) {
+    list.innerHTML = `
+      <div class="text-sm text-red-400 space-y-2">
+        <p>No se pudieron cargar tus plantillas: ${escapeHtml(state.templateLoadError)}</p>
+        <button id="retryTemplatesBtn" type="button" class="text-fuchsia-400 hover:underline">Reintentar</button>
+      </div>
+    `;
+    $('retryTemplatesBtn').addEventListener('click', loadTemplatesFromDb);
     return;
   }
 
@@ -646,11 +666,9 @@ function handleDownload(e) {
 async function init() {
   renderThemeGrid();
   setAiMode('json');
-  await restoreSession();
   renderProfileArea();
   renderMyPortfoliosBox();
   renderMyTemplatesBox();
-  renderThemeGrid();
   updateJsonValidation();
   updateAiCharCount();
 
@@ -673,6 +691,12 @@ async function init() {
   $('authModal')?.addEventListener('click', (e) => {
     if (e.target.id === 'authModal') closeAuthModal();
   });
+
+  await restoreSession();
+  renderProfileArea();
+  renderMyPortfoliosBox();
+  renderMyTemplatesBox();
+  renderThemeGrid();
 }
 
 document.addEventListener('DOMContentLoaded', init);
