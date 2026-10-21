@@ -44,7 +44,19 @@ REGLAS:
 9. No agregues foto, fotoUrl ni avatar.
 10. No inventes datos profesionales del usuario: el contenido debe salir de los placeholders.
 11. Evita formularios que envíen datos a servicios externos.
-12. No uses bloques Markdown como ```html.'''
+12. No uses bloques Markdown como ```html.
+13. Usa exclusivamente estos helpers de Handlebars: {{#if campo}}, {{else}}, {{/if}}, {{#each habilidades}}, {{#each proyectos}}, {{#each this.tags}} y sus cierres correspondientes.
+14. Cada {{#if ...}} debe tener exactamente un {{/if}} correspondiente; cada {{#each ...}} debe cerrarse con el mismo nombre de helper, por ejemplo {{/each}}. No dejes bloques abiertos ni cierres sobrantes.
+15. No uses sintaxis Handlebars para CSS, JavaScript, atributos style ni objetos JavaScript. Para JavaScript utiliza llaves normales { } y evita secuencias literales {{ o }}.
+16. Para los datos del perfil utiliza solo estos campos: nombre, subtitulo, biografia, habilidades, proyectos, proyectos[].titulo, proyectos[].descripcion, proyectos[].enlace. Los campos opcionales pueden comprobarse con {{#if campo}}.
+17. No uses helpers personalizados, lookup, with, unless, ni expresiones complejas dentro de {{...}}.
+18. Antes de responder, revisa mentalmente que todos los bloques Handlebars estén correctamente abiertos y cerrados y que el documento incluya </html>.
+19. Prioriza HTML/CSS simples y robustos; no incluyas Handlebars dentro de etiquetas <script> ni dentro de bloques CSS.
+20. No uses expresiones como {{#if (eq ...)}} ni helpers personalizados; solo bloques básicos con nombres de campos simples.
+21. Para proyectos, usa {{#each proyectos}} y dentro de cada proyecto solo {{this.titulo}}, {{this.descripcion}} y {{this.enlace}}.
+22. Para habilidades, usa {{#each habilidades}} y {{this}}.
+23. Si necesitas condicionales, usa únicamente campos simples como {{#if email}} ... {{/if}}; no inventes nombres de campos que no estén en el JSON recibido.
+24. Devuelve siempre un documento completo con <!DOCTYPE html>, <html>, <head>, <body> y sus cierres.'''
 
 
 def _client() -> OpenAI:

@@ -555,6 +555,30 @@ async function generateTemplateMode(rawText, status, btn) {
     if (elapsed < 3000) await sleep(3000 - elapsed);
 
     const generated = result.data;
+
+    // Valida la sintaxis de Handlebars antes de guardar una plantilla rota.
+    // Compilar no ejecuta scripts del HTML; solo comprueba la plantilla.
+    try {
+      if (!generated || typeof generated.template !== 'string' || !generated.template.trim()) {
+        throw new Error('La IA no devolvió el HTML de la plantilla.');
+      }
+      // Handlebars.compile() es lazy: puede no analizar el contenido hasta renderizar.
+      // precompile() fuerza el análisis sintáctico y permite detectar bloques rotos.
+      Handlebars.precompile(generated.template);
+
+      // Render de prueba con el perfil actual para detectar errores durante la evaluación.
+      const renderedPreview = Handlebars.compile(generated.template, { strict: false })(profileData);
+      if (!renderedPreview || !renderedPreview.toLowerCase().includes('</html>')) {
+        throw new Error('El resultado renderizado no contiene el cierre </html>.');
+      }
+    } catch (compileError) {
+      console.error('[Plantillas IA] Error de sintaxis Handlebars:', compileError);
+      throw new Error(
+        'La IA generó una plantilla con sintaxis inválida. Vuelve a intentarlo con una descripción más sencilla. Detalle: ' +
+        (compileError && compileError.message ? compileError.message : 'error de sintaxis')
+      );
+    }
+
     const saved = await api('/api/templates', {
       method: 'POST',
       body: JSON.stringify({
@@ -636,10 +660,21 @@ function handleDownload(e) {
 
   let htmlFinal;
   try {
-    htmlFinal = Handlebars.compile(theme.template)(data);
+    if (!theme.template || typeof theme.template !== 'string') {
+      throw new Error('La plantilla no contiene HTML.');
+    }
+
+    // Forzar análisis sintáctico antes de renderizar.
+    Handlebars.precompile(theme.template);
+    htmlFinal = Handlebars.compile(theme.template, { strict: false })(data);
+
+    if (!htmlFinal || !htmlFinal.toLowerCase().includes('</html>')) {
+      throw new Error('La plantilla no produjo un documento HTML completo.');
+    }
   } catch (err) {
-    console.error(err);
-    notify('La plantilla tiene un error y no se pudo compilar.', 'error');
+    console.error('[PortafolioGen] Error al compilar/renderizar la plantilla:', err);
+    const detail = err && err.message ? ` Detalle técnico: ${err.message}` : '';
+    notify(`No se pudo generar la página. Vuelve a crear o selecciona otra plantilla.${detail}`, 'error');
     return;
   }
 
